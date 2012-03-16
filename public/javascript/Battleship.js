@@ -1,7 +1,7 @@
-$(function() {
+$(function () {
   newGame();
 
-  $('#newGame').click(function() {
+  $('#newGame').click(function () {
     newGame();
   });
 });
@@ -26,7 +26,7 @@ function updateShotCounters() {
 
 function showTargetFeedbackIfEndOfIteration() {
   var shotsRemainingForIteration = $('#shotsRemainingForIteration');
-  if(shotsRemainingForIteration.val() == 0) {
+  if (shotsRemainingForIteration.val() == 0) {
     showTargetFeedback();
     shotsRemainingForIteration.val($('#shotsPerIteration').val());
   }
@@ -34,7 +34,7 @@ function showTargetFeedbackIfEndOfIteration() {
 
 function endGameIfNoShotsRemaining() {
   var totalShotsRemaining = $('#totalShotsRemaining');
-  if(totalShotsRemaining.val() == 0) {
+  if (totalShotsRemaining.val() == 0) {
     showFleet();
     $('.cell').off('click');
   }
@@ -42,12 +42,13 @@ function endGameIfNoShotsRemaining() {
 
 function drawGrid(grid) {
   var table = $('<table id="grid" cellpadding="0" cellspacing="0">');
-  for(var i = 0; i < grid.length; i++) {
+  for (var i = 0; i < grid.length; i++) {
     var tr = $('<tr>');
     table.append(tr);
-    for(var j = 0; j < grid[i].length; j++) {
+    for (var j = 0; j < grid[i].length; j++) {
       var td = $('<td>');
       td.attr('id', buildCellId(j, i));
+      //td.text(j + ',' + i);
       td.addClass('cell');
       tr.append(td);
     }
@@ -57,7 +58,7 @@ function drawGrid(grid) {
   container.empty();
   container.append(table);
 
-  $('.cell').click(function() {
+  $('.cell').click(function () {
     $(this).addClass('target');
     updateShotCounters();
     showTargetFeedbackIfEndOfIteration();
@@ -66,13 +67,50 @@ function drawGrid(grid) {
 }
 
 function initializeFleet() {
-  var fleet = new Array(5);
-  fleet[0] = {id: 'aircraft-carrier', x: 0, y: 0, size: 5, direction: 'horizontal'};
-  fleet[1] = {id: 'battleship', x: 0, y: 2, size: 4, direction: 'vertical'};
-  fleet[2] = {id: 'submarine', x: 4, y: 3, size: 3, direction: 'horizontal'};
-  fleet[3] = {id: 'cruiser', x: 6, y: 7, size: 3, direction: 'horizontal'};
-  fleet[4] = {id: 'destroyer', x: 7, y: 1, size: 2, direction: 'vertical'};
-  return fleet;
+  var fleets = new Array();
+
+  var fleet1 = new Array(5);
+  fleet1[0] = {id:'aircraft-carrier', x:0, y:0, size:5, direction:'horizontal'};
+  fleet1[1] = {id:'battleship', x:0, y:2, size:4, direction:'vertical'};
+  fleet1[2] = {id:'submarine', x:4, y:3, size:3, direction:'horizontal'};
+  fleet1[3] = {id:'cruiser', x:6, y:7, size:3, direction:'horizontal'};
+  fleet1[4] = {id:'destroyer', x:7, y:1, size:2, direction:'vertical'};
+  fleets.push(fleet1);
+
+  var fleet2 = new Array(5);
+  fleet2[0] = {id:'aircraft-carrier', x:4, y:8, size:5, direction:'horizontal'};
+  fleet2[1] = {id:'battleship', x:3, y:5, size:4, direction:'vertical'};
+  fleet2[2] = {id:'submarine', x:1, y:3, size:3, direction:'vertical'};
+  fleet2[3] = {id:'cruiser', x:6, y:6, size:3, direction:'horizontal'};
+  fleet2[4] = {id:'destroyer', x:7, y:1, size:2, direction:'vertical'};
+  fleets.push(fleet2);
+
+  var fleet3 = new Array(5);
+  fleet3[0] = {id:'aircraft-carrier', x:5, y:9, size:5, direction:'horizontal'};
+  fleet3[1] = {id:'battleship', x:1, y:9, size:4, direction:'horizontal'};
+  fleet3[2] = {id:'submarine', x:1, y:1, size:3, direction:'vertical'};
+  fleet3[3] = {id:'cruiser', x:2, y:1, size:3, direction:'horizontal'};
+  fleet3[4] = {id:'destroyer', x:9, y:7, size:2, direction:'vertical'};
+  fleets.push(fleet3);
+
+  var fleet4 = new Array(5);
+  fleet4[0] = {id:'aircraft-carrier', x:3, y:4, size:5, direction:'horizontal'};
+  fleet4[1] = {id:'battleship', x:5, y:7, size:4, direction:'horizontal'};
+  fleet4[2] = {id:'submarine', x:7, y:2, size:3, direction:'horizontal'};
+  fleet4[3] = {id:'cruiser', x:2, y:1, size:3, direction:'horizontal'};
+  fleet4[4] = {id:'destroyer', x:1, y:8, size:2, direction:'horizontal'};
+  fleets.push(fleet4);
+
+  var fleet5 = new Array(5);
+  fleet5[0] = {id:'aircraft-carrier', x:3, y:4, size:5, direction:'vertical'};
+  fleet5[1] = {id:'battleship', x:5, y:6, size:4, direction:'vertical'};
+  fleet5[2] = {id:'submarine', x:7, y:2, size:3, direction:'vertical'};
+  fleet5[3] = {id:'cruiser', x:2, y:1, size:3, direction:'vertical'};
+  fleet5[4] = {id:'destroyer', x:1, y:8, size:2, direction:'vertical'};
+  fleets.push(fleet5);
+
+  var randomIndex = Math.floor(Math.random() * fleets.length);
+  return fleets[randomIndex];
 }
 
 function drawFleet(fleet) {
@@ -85,12 +123,12 @@ function drawFleet(fleet) {
 function drawBoat(boat) {
   var x = boat.x;
   var y = boat.y;
-  for(var i = 0; i < boat.size; i++) {
+  for (var i = 0; i < boat.size; i++) {
     var cell = $('#' + buildCellId(x, y));
     cell.addClass('boat');
     cell.addClass(boat.id);
     cell.attr('data-type', boat.id);
-    if(boat.direction == 'horizontal') {
+    if (boat.direction == 'horizontal') {
       x++;
     } else {
       y++;
@@ -107,7 +145,7 @@ function showTargetFeedback() {
   for (var i = 0; i < targets.length; i++) {
     var target = $(targets[i]);
     target.removeClass('target');
-    if(target.hasClass('boat')) {
+    if (target.hasClass('boat')) {
       target.addClass('hit');
       showBoatIfSunk(target);
     } else {
@@ -120,9 +158,9 @@ function showBoatIfSunk(target) {
   var boatType = target.attr('data-type');
   var boatCells = $("." + boatType);
 
-  for(var i = 0; i < boatCells.length; i++) {
+  for (var i = 0; i < boatCells.length; i++) {
     var boatCell = $(boatCells[i]);
-    if(!boatCell.hasClass('hit')) {
+    if (!boatCell.hasClass('hit')) {
       return;
     }
   }
