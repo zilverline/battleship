@@ -35,9 +35,19 @@ function showTargetFeedbackIfEndOfIteration() {
 function endGameIfNoShotsRemaining() {
   var totalShotsRemaining = $('#totalShotsRemaining');
   if (totalShotsRemaining.val() == 0) {
-    showFleet();
-    $('.cell').off('click');
+    endGame();
   }
+}
+
+function endGameIfAllShipsSunk() {
+  if($('.boat.hit').length == $('.boat').length) {
+    endGame();
+  }
+}
+
+function endGame() {
+  showFleet();
+  $('.cell').off('click');
 }
 
 function drawGrid(grid) {
@@ -166,6 +176,7 @@ function showBoatIfSunk(target) {
   }
 
   showBoat(boatType);
+  endGameIfAllShipsSunk();
 }
 
 function showBoat(boatType) {
