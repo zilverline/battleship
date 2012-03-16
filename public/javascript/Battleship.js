@@ -48,7 +48,6 @@ function drawGrid(grid) {
     for(var j = 0; j < grid[i].length; j++) {
       var td = $('<td>');
       td.attr('id', buildCellId(j, i));
-//      td.text(j + ',' + i);
       td.addClass('cell');
       tr.append(td);
     }
@@ -90,6 +89,7 @@ function drawBoat(boat) {
     var cell = $('#' + buildCellId(x, y));
     cell.addClass('boat');
     cell.addClass(boat.id);
+    cell.attr('data-type', boat.id);
     if(boat.direction == 'horizontal') {
       x++;
     } else {
@@ -99,7 +99,7 @@ function drawBoat(boat) {
 }
 
 function showFleet() {
-  $('#grid').addClass('showBoats');
+  $('.boat').addClass('showBoat');
 }
 
 function showTargetFeedback() {
@@ -109,10 +109,29 @@ function showTargetFeedback() {
     target.removeClass('target');
     if(target.hasClass('boat')) {
       target.addClass('hit');
+      showBoatIfSunk(target);
     } else {
       target.addClass('miss');
     }
   }
+}
+
+function showBoatIfSunk(target) {
+  var boatType = target.attr('data-type');
+  var boatCells = $("." + boatType);
+
+  for(var i = 0; i < boatCells.length; i++) {
+    var boatCell = $(boatCells[i]);
+    if(!boatCell.hasClass('hit')) {
+      return;
+    }
+  }
+
+  showBoat(boatType);
+}
+
+function showBoat(boatType) {
+  $("." + boatType).addClass('showBoat');
 }
 
 function newGame() {

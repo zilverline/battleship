@@ -6,39 +6,37 @@
         <script type="text/javascript" src="javascript/Battleship.js"></script>
 
         <style type="text/css">
-            table {
+            #grid {
                 background-color: aqua;
+                border-right: 3px solid black;
+                border-bottom: 3px solid black;
             }
 
-            .cell {
-                border: 1px solid black;
+            #grid td {
+                border-top: 3px solid black;
+                border-left: 3px solid black;
                 width: 50px;
                 height: 50px;
-                /*background-color: aqua;*/
                 text-align: center;
             }
 
-            .boat {
-                /*background-color: white;*/
-            }
-
-            table.showBoats .aircraft-carrier {
+            .showBoat.aircraft-carrier {
                 background-color: red;
             }
 
-            table.showBoats .battleship {
+            .showBoat.battleship {
                 background-color:  #006400;
             }
 
-            table.showBoats .submarine {
+            .showBoat.submarine {
                 background-color: yellow;
             }
 
-            table.showBoats .cruiser {
+            .showBoat.cruiser {
                 background-color: blue;
             }
 
-            table.showBoats .destroyer {
+            .showBoat.destroyer {
                 background-color: orange;
             }
 
