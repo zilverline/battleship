@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <title>Battleship</title>
+
+        <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
+        <script type="text/javascript" src="javascript/Battleship.js"></script>
+
+        <style type="text/css">
+            table {
+                background-color: aqua;
+            }
+
+            .cell {
+                border: 1px solid black;
+                width: 50px;
+                height: 50px;
+                /*background-color: aqua;*/
+                text-align: center;
+            }
+
+            .boat {
+                /*background-color: white;*/
+            }
+
+            table.showBoats .aircraft-carrier {
+                background-color: red;
+            }
+
+            table.showBoats .battleship {
+                background-color:  #006400;
+            }
+
+            table.showBoats .submarine {
+                background-color: yellow;
+            }
+
+            table.showBoats .cruiser {
+                background-color: blue;
+            }
+
+            table.showBoats .destroyer {
+                background-color: orange;
+            }
+
+            .target {
+                background-image: url("images/1331901174_bullet_red.png");
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            .hit {
+                background-image: url("images/1331900690_fire.png");
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            .miss {
+                background-image: url("images/1331900805_cross.png");
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        </style>
+    </head>
+    <body>
+        <label for="shotsPerIteration">Shots per iteration: </label>
+        <input id="shotsPerIteration" type="number" min="1" max="40" value="40" />
+        <button id="newGame">New game</button>
+        <br />
+
+        <div id="container"></div>
+        <br />
+
+        <label for="totalShotsRemaining">Total shots remaining: </label>
+        <input id="totalShotsRemaining" type="number" min="1" max="40" disabled="disabled" />
+        <label for="shotsRemainingForIteration">Shots remaining for iteration: </label>
+        <input id="shotsRemainingForIteration" type="number" min="1" max="40" disabled="disabled" />
+    </body>
+</html>
