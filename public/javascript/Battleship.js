@@ -1,6 +1,6 @@
 $(function () {
   newGame();
-
+  endGame();
   $('#newGame').click(function () {
     newGame();
   });
@@ -76,51 +76,97 @@ function drawGrid(grid) {
   });
 }
 
-function initializeFleet() {
-  var fleets = new Array();
+function randomFleetDeployment() {
+  var fleet = new Array(5);
+  fleet[0] = {id:'aircraft-carrier', size:5, direction: randomDirection() };
+  fleet[1] = {id:'battleship', size:4, direction: randomDirection() };
+  fleet[2] = {id:'submarine', size:3, direction: randomDirection() };
+  fleet[3] = {id:'cruiser', size:3, direction: randomDirection() };
+  fleet[4] = {id:'destroyer', size:2, direction: randomDirection() };
+  
+  var fleetWithPositions = randomDeployShips(fleet);
+  
+  return fleetWithPositions;
+}
 
-  var fleet1 = new Array(5);
-  fleet1[0] = {id:'aircraft-carrier', x:0, y:0, size:5, direction:'horizontal'};
-  fleet1[1] = {id:'battleship', x:0, y:2, size:4, direction:'vertical'};
-  fleet1[2] = {id:'submarine', x:4, y:3, size:3, direction:'horizontal'};
-  fleet1[3] = {id:'cruiser', x:6, y:7, size:3, direction:'horizontal'};
-  fleet1[4] = {id:'destroyer', x:7, y:1, size:2, direction:'vertical'};
-  fleets.push(fleet1);
+function randomDirection(){
+  var random = Math.random();
+  var direction = 'vertical';
 
-  var fleet2 = new Array(5);
-  fleet2[0] = {id:'aircraft-carrier', x:4, y:8, size:5, direction:'horizontal'};
-  fleet2[1] = {id:'battleship', x:3, y:5, size:4, direction:'vertical'};
-  fleet2[2] = {id:'submarine', x:1, y:3, size:3, direction:'vertical'};
-  fleet2[3] = {id:'cruiser', x:6, y:6, size:3, direction:'horizontal'};
-  fleet2[4] = {id:'destroyer', x:7, y:1, size:2, direction:'vertical'};
-  fleets.push(fleet2);
+  if(random<0.5){
+    direction = 'horizontal';
+  }
+  return direction;
+}
 
-  var fleet3 = new Array(5);
-  fleet3[0] = {id:'aircraft-carrier', x:5, y:9, size:5, direction:'horizontal'};
-  fleet3[1] = {id:'battleship', x:1, y:9, size:4, direction:'horizontal'};
-  fleet3[2] = {id:'submarine', x:1, y:1, size:3, direction:'vertical'};
-  fleet3[3] = {id:'cruiser', x:2, y:1, size:3, direction:'horizontal'};
-  fleet3[4] = {id:'destroyer', x:9, y:7, size:2, direction:'vertical'};
-  fleets.push(fleet3);
+function randomDeployShips(fleet){
+  var fleetWithPositions = new Array();
+  var reservedCoordinates = new Array();
 
-  var fleet4 = new Array(5);
-  fleet4[0] = {id:'aircraft-carrier', x:3, y:4, size:5, direction:'horizontal'};
-  fleet4[1] = {id:'battleship', x:5, y:7, size:4, direction:'horizontal'};
-  fleet4[2] = {id:'submarine', x:7, y:2, size:3, direction:'horizontal'};
-  fleet4[3] = {id:'cruiser', x:2, y:1, size:3, direction:'horizontal'};
-  fleet4[4] = {id:'destroyer', x:1, y:8, size:2, direction:'horizontal'};
-  fleets.push(fleet4);
+  for(var i = 0; i<fleet.length;i++){
+    var ship = fleet[i];
+    var x1 = 0;
+    var y1 = 0;
 
-  var fleet5 = new Array(5);
-  fleet5[0] = {id:'aircraft-carrier', x:3, y:4, size:5, direction:'vertical'};
-  fleet5[1] = {id:'battleship', x:5, y:6, size:4, direction:'vertical'};
-  fleet5[2] = {id:'submarine', x:7, y:2, size:3, direction:'vertical'};
-  fleet5[3] = {id:'cruiser', x:2, y:1, size:3, direction:'vertical'};
-  fleet5[4] = {id:'destroyer', x:1, y:8, size:2, direction:'vertical'};
-  fleets.push(fleet5);
+    if(ship.direction == 'horizontal'){
+      x1 = getRandomCoordinate(9 - ship.size);
+      y1 = getRandomCoordinate(9);
+    } else {
+      x1 = getRandomCoordinate(9);
+      y1 = getRandomCoordinate(9 - ship.size);
+    }
 
-  var randomIndex = Math.floor(Math.random() * fleets.length);
-  return fleets[randomIndex];
+    var proposedShipCoordinates = getCoordinates(ship, x1, y1);
+
+    var isFree = true;
+    
+    for(var i1 = 0; i1<reservedCoordinates.length;i1++){
+      var reservedCoordinate = reservedCoordinates[i1];
+
+      for(var j = 0; j<proposedShipCoordinates.length;j++){
+        var proposedCoordinate = proposedShipCoordinates[j];
+
+        if(proposedCoordinate == reservedCoordinate){
+          isFree = false;
+        }
+      }
+      
+    }
+
+    if(isFree){
+
+      var shipWithCoordinate = {id: ship.id, x: x1, y: y1, size: ship.size, direction: ship.direction};
+      fleetWithPositions.push(shipWithCoordinate);
+      reservedCoordinates.push(proposedShipCoordinates);
+
+    } else {
+      i--;
+    }
+  
+  }
+  
+  return fleetWithPositions;
+}
+
+function getCoordinates(ship, x, y){
+  var reservedCoordinates = new Array();
+
+  if(ship.direction == 'horizontal'){
+    for(var i = x; i<x+ship.size;i++){
+      reservedCoordinates.push('('+ i +','+ y + ')');
+    }
+  } else {
+    for(var i = y; i<y+ship.size;i++){
+      reservedCoordinates.push('('+ x +','+ i + ')');
+    }
+  }
+
+  return reservedCoordinates;
+}
+
+function getRandomCoordinate(max){
+
+  return Math.floor(Math.random() * max);
 }
 
 function drawFleet(fleet) {
@@ -131,6 +177,8 @@ function drawFleet(fleet) {
 }
 
 function drawBoat(boat) {
+  console.log(boat);
+
   var x = boat.x;
   var y = boat.y;
   for (var i = 0; i < boat.size; i++) {
@@ -190,7 +238,8 @@ function newGame() {
 
   var grid = initializeGrid(10, 10);
   drawGrid(grid);
-  var fleet = initializeFleet();
+  var fleet = randomFleetDeployment();
+  console.log(fleet); 
   drawFleet(fleet);
 }
 
