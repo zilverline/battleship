@@ -121,16 +121,21 @@ function randomDeployShips(fleet){
     var isFree = true;
     
     for(var i1 = 0; i1<reservedCoordinates.length;i1++){
-      var reservedCoordinate = reservedCoordinates[i1];
+      var reservedCoordinaten = reservedCoordinates[i1];
 
-      for(var j = 0; j<proposedShipCoordinates.length;j++){
-        var proposedCoordinate = proposedShipCoordinates[j];
+      for(var i2 = 0; i2<reservedCoordinaten.length;i2++){
 
-        if(proposedCoordinate == reservedCoordinate){
-          isFree = false;
+        var reservedCoordinate =reservedCoordinaten[i2]; 
+
+        for(var j = 0; j<proposedShipCoordinates.length;j++){
+          var proposedCoordinate = proposedShipCoordinates[j];
+        
+          if(proposedCoordinate == reservedCoordinate){
+            
+            isFree = false;
+          }
         }
-      }
-      
+      }  
     }
 
     if(isFree){
