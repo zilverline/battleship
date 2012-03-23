@@ -61,9 +61,23 @@ var Board = Backbone.Model.extend({
     return cells;
   },
   validBoatPlacement: function(boat) {
+    var self = this;
     var cells = this.getCellsForBoat(boat);
     return !_(cells).any(function(cell) {
-      return cell === undefined || cell.has("boat");
+      
+      if (!cell) {
+        return true;
+      }
+      var edgeCells = [];      
+      edgeCells.push(self.getCell(cell.get("x") + 1, cell.get("y")));
+      edgeCells.push(self.getCell(cell.get("x") - 1, cell.get("y")));
+      edgeCells.push(self.getCell(cell.get("x"), cell.get("y") + 1));
+      edgeCells.push(self.getCell(cell.get("x"), cell.get("y") - 1));
+      
+      return _(edgeCells).any(function(cell) {
+        return cell === undefined || cell.has("boat");
+      });
+      
     });
   },
   fleetSize: function() {
