@@ -1,0 +1,65 @@
+body {
+  font-family: sans-serif;
+}
+.board {
+    border-collapse: collapse;
+    background-color: #a7cbf0;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    margin: 20px;
+}
+
+.cell {
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+.showBoat.aircraft-carrier {
+    background-color: red;
+}
+
+.showBoat.battleship {
+    background-color:  #006400;
+}
+
+.showBoat.submarine {
+    background-color: yellow;
+}
+
+.showBoat.cruiser {
+    background-color: blue;
+}
+
+.showBoat.destroyer {
+    background-color: orange;
+}
+
+.target {
+    background-image: url("/images/1331901174_bullet_red.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hit {
+    background-image: url("/images/1331900690_fire.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.miss {
+    background-image: url("/images/1331900805_cross.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#info {
+  width: 570px;
+}
+#result {
+  width: 300px;
+  font-size: 28px;
+  padding: 10px;
+  text-align: right;
+}

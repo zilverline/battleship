@@ -2,62 +2,24 @@
     <head>
         <title>Battleship</title>
 
-        <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
-        <script type="text/javascript" src="javascript/Battleship.js"></script>
+        <script type="text/javascript" src="/javascripts/ext/underscore.js"></script>
+        <script type="text/javascript" src="/javascripts/ext/jquery-1.7.1.js"></script>
+        <script type="text/javascript" src="/javascripts/ext/backbone.js"></script>
+        <script type="text/javascript" src="/javascripts/ext/icanhaz.js"></script>
 
-        <style type="text/css">
-            #grid {
-                background-color: aqua;
-                border-right: 3px solid black;
-                border-bottom: 3px solid black;
-            }
-
-            #grid td {
-                border-top: 3px solid black;
-                border-left: 3px solid black;
-                width: 50px;
-                height: 50px;
-                text-align: center;
-            }
-
-            .showBoat.aircraft-carrier {
-                background-color: red;
-            }
-
-            .showBoat.battleship {
-                background-color:  #006400;
-            }
-
-            .showBoat.submarine {
-                background-color: yellow;
-            }
-
-            .showBoat.cruiser {
-                background-color: blue;
-            }
-
-            .showBoat.destroyer {
-                background-color: orange;
-            }
-
-            .target {
-                background-image: url("images/1331901174_bullet_red.png");
-                background-position: center;
-                background-repeat: no-repeat;
-            }
-
-            .hit {
-                background-image: url("images/1331900690_fire.png");
-                background-position: center;
-                background-repeat: no-repeat;
-            }
-
-            .miss {
-                background-image: url("images/1331900805_cross.png");
-                background-position: center;
-                background-repeat: no-repeat;
-            }
-        </style>
+        <script type="text/javascript" src="/javascripts/app/Boat.js"></script>
+        <script type="text/javascript" src="/javascripts/app/Cell.js"></script>
+        <script type="text/javascript" src="/javascripts/app/Board.js"></script>
+        <script type="text/javascript" src="/javascripts/app/Game.js"></script>
+        
+        <script type="text/javascript" src="/javascripts/boot.js"></script>
+        
+        
+        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" media="screen" charset="utf-8">
+        
+        <script id="board" type="text/html">
+          <td>{{ name }}</td>
+        </script>
     </head>
     <body>
         <label for="shotsPerIteration">Shots per iteration: </label>
@@ -68,9 +30,15 @@
         <div id="container"></div>
         <br />
 
-        <label for="totalShotsRemaining">Total shots remaining: </label>
-        <input id="totalShotsRemaining" type="number" min="1" max="40" disabled="disabled" />
-        <label for="shotsRemainingForIteration">Shots remaining for iteration: </label>
-        <input id="shotsRemainingForIteration" type="number" min="1" max="40" disabled="disabled" />
+        <table id="info">
+          <tr>
+            <td>Total shots remaining:</td>
+            <td id="totalShotsRemaining">&nbsp;</td>
+            <td rowspan="2" id="result">&nbsp;</td>
+          </tr>
+            <td>Shots remaining for iteration:</td>
+            <td id="shotsRemainingForIteration">&nbsp;</td>
+          </tr>
+        </table>
     </body>
 </html>
