@@ -38,19 +38,19 @@ body {
 }
 
 .target {
-    background-image: url("/images/1331901174_bullet_red.png");
+    background-image: url("../images/1331901174_bullet_red.png");
     background-position: center;
     background-repeat: no-repeat;
 }
 
 .hit {
-    background-image: url("/images/1331900690_fire.png");
+    background-image: url("../images/1331900690_fire.png");
     background-position: center;
     background-repeat: no-repeat;
 }
 
 .miss {
-    background-image: url("/images/1331900805_cross.png");
+    background-image: url("../images/1331900805_cross.png");
     background-position: center;
     background-repeat: no-repeat;
 }
