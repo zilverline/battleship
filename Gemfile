@@ -1,3 +1,9 @@
 source :rubygems
 
-gem 'jasmine'
+gem 'rack'
+
+group :test do
+  gem 'jasmine'
+  gem 'rspec'
+  gem 'capybara'
+end
