@@ -54,12 +54,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
-#info {
-  width: 570px;
-}
-#result {
-  width: 300px;
-  font-size: 28px;
-  padding: 10px;
-  text-align: right;
+
+#endGameResult {
+  font-size: 24px;
 }

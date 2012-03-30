@@ -100,16 +100,18 @@ var GameView = Backbone.View.extend({
     $("#totalShotsRemaining").html(this.model.get("shotsRemainingForGame"));
   },
   updateFunds: function() {
-    $("#funds").html(this.model.get("funds"));
+    var funds = this.model.get("funds");
+    $("#funds").html(this.euros(funds));
   },
   updateEndGameState: function(model, endGameState) {
     var diff = this.model.get("funds") - this.model.get("maxShots") * this.model.get("costPerShot");
     if (endGameState === "lose") {
-      $("#endGameResult").html("Game Over<br/>You made " + diff);
+      $("#endGameResult").html("Game Over<br/>You made " + this.euros(diff));
     } else {
-      $("#endGameResult").html("You win!<br/>You made " + diff);
+      $("#endGameResult").html("You win!<br/>You made " + this.euros(diff));
     }
-
-
+  },
+  euros: function(amount) {
+    return "&euro; " + $.formatNumber(amount, {format:"#,##0", locale:"nl"})
   }
 });
