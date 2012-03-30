@@ -27,16 +27,16 @@ var Game = Backbone.Model.extend({
         while(!placed) {
           var boat = new Boat({x: self.random(board.get("gridSize").x + 1), y: self.random(board.get("gridSize").y + 1), direction: directions[self.random(2)], type: type, visible: false});
           if(board.validBoatPlacement(boat)) {
-            self.get("fleet").push(boat);
+            self.addBoat(boat);
             placed = true;
           }
         }
       });
+    } else {
+      _(this.get("fleet")).each(function(boat) {
+        self.addBoat(boat);
+      });
     }
-
-    _(this.get("fleet")).each(function(boat) {
-      self.addBoat(boat);
-    });
   },
   random: function(max) {
     return Math.floor(Math.random()*max);
