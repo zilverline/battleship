@@ -101,7 +101,6 @@ var GameView = Backbone.View.extend({
     this.updateShotsRemainingForGame();
     this.updateShotsRemainingForIteration();
     this.updateFunds();
-    this.model.get("board").showFleet();
     $("#endGameResult").html("");
     return this;
   },
