@@ -20,16 +20,18 @@ var Game = Backbone.Model.extend({
 
     var self = this;
     var board = this.get("board");
-    _(["aircraft-carrier","battleship","submarine","cruiser","destroyer"]).each(function(type) {
-      var placed = false;
-      while(!placed) {
-        var boat = new Boat({x: self.random(board.get("gridSize").x + 1), y: self.random(board.get("gridSize").y + 1), direction: directions[self.random(2)], type: type, visible: false})
-        if(board.validBoatPlacement(boat)) {
-          self.addBoat(boat);
-          placed = true;
+    if(board.fleetSize() == 0) {
+      _(["aircraft-carrier","battleship","submarine","cruiser","destroyer"]).each(function(type) {
+        var placed = false;
+        while(!placed) {
+          var boat = new Boat({x: self.random(board.get("gridSize").x + 1), y: self.random(board.get("gridSize").y + 1), direction: directions[self.random(2)], type: type, visible: false});
+          if(board.validBoatPlacement(boat)) {
+            self.addBoat(boat);
+            placed = true;
+          }
         }
-      }
-    });
+      });
+    }
   },
   random: function(max) {
     return Math.floor(Math.random()*max);
@@ -51,7 +53,7 @@ var Game = Backbone.Model.extend({
       this.set("shotsRemainingForIteration", this.get("shotsPerIteration"));
       this.get("board").showFeedback();
     }
-    
+
     if (this.get("shotsRemainingForGame") <= 0) {
       this.endGame();
     }
@@ -82,22 +84,26 @@ var Game = Backbone.Model.extend({
 
 var GameView = Backbone.View.extend({
   initialize: function(args) {
-    _.bindAll(this, "updateShotCount", "updateEndGameState", "updateFunds");
-    this.model.bind("change:shotsRemainingForGame", this.updateShotCount);
+    _.bindAll(this, "updateShotsRemainingForGame", "updateShotsRemainingForIteration", "updateEndGameState", "updateFunds");
+    this.model.bind("change:shotsRemainingForGame", this.updateShotsRemainingForGame);
+    this.model.bind("change:shotsRemainingForIteration", this.updateShotsRemainingForIteration);
     this.model.bind("change:funds", this.updateFunds);
     this.model.bind("change:endGameState", this.updateEndGameState);
   },
   render: function() {
     this.boardView = new BoardView({model: this.model.get("board")});
     $("#container").append(this.boardView.render().el);
-    this.updateShotCount();
+    this.updateShotsRemainingForGame();
+    this.updateShotsRemainingForIteration();
     this.updateFunds();
     $("#endGameResult").html("");
     return this;
   },
-  updateShotCount: function() {
-    $("#shotsRemainingForIteration").html(this.model.get("shotsRemainingForIteration"));
+  updateShotsRemainingForGame: function() {
     $("#totalShotsRemaining").html(this.model.get("shotsRemainingForGame"));
+  },
+  updateShotsRemainingForIteration: function() {
+    $("#shotsRemainingForIteration").html(this.model.get("shotsRemainingForIteration"));
   },
   updateFunds: function() {
     var funds = this.model.get("funds");
