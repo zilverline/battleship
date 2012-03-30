@@ -3,7 +3,8 @@ var Game = Backbone.Model.extend({
     shotsPerIteration: 40,
     maxShots: 40,
     costPerShot: 10000,
-    sunkenBoatCellReward: 50000
+    sunkenBoatCellReward: 50000,
+    fleet: []
   },
   initialize: function(args) {
     _.bindAll(this, "sunkenBoat", "shotFired");
@@ -20,18 +21,22 @@ var Game = Backbone.Model.extend({
 
     var self = this;
     var board = this.get("board");
-    if(board.fleetSize() == 0) {
+    if(this.get("fleet").length == 0) {
       _(["aircraft-carrier","battleship","submarine","cruiser","destroyer"]).each(function(type) {
         var placed = false;
         while(!placed) {
           var boat = new Boat({x: self.random(board.get("gridSize").x + 1), y: self.random(board.get("gridSize").y + 1), direction: directions[self.random(2)], type: type, visible: false});
           if(board.validBoatPlacement(boat)) {
-            self.addBoat(boat);
+            self.get("fleet").push(boat);
             placed = true;
           }
         }
       });
     }
+
+    _(this.get("fleet")).each(function(boat) {
+      self.addBoat(boat);
+    });
   },
   random: function(max) {
     return Math.floor(Math.random()*max);
@@ -96,6 +101,7 @@ var GameView = Backbone.View.extend({
     this.updateShotsRemainingForGame();
     this.updateShotsRemainingForIteration();
     this.updateFunds();
+    this.model.get("board").showFleet();
     $("#endGameResult").html("");
     return this;
   },
@@ -112,9 +118,9 @@ var GameView = Backbone.View.extend({
   updateEndGameState: function(model, endGameState) {
     var diff = this.model.get("funds") - this.model.get("maxShots") * this.model.get("costPerShot");
     if (endGameState === "lose") {
-      $("#endGameResult").html("Game Over<br/>You made " + this.euros(diff));
+      $("#endGameResult").html("Game Over <br/>You made " + this.euros(diff));
     } else {
-      $("#endGameResult").html("You win!<br/>You made " + this.euros(diff));
+      $("#endGameResult").html("You win! <br/>You made " + this.euros(diff));
     }
   },
   euros: function(amount) {

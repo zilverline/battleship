@@ -22,8 +22,13 @@ describe "Game" do
 
     before :each do
       page.execute_script <<-EOF
-      var game = new Game({shotsPerIteration: 2});
-      game.addBoat(new Boat({x: 0, y: 0, direction: 'horizontal', type: 'destroyer'}));
+      var game = new Game({shotsPerIteration: 2, fleet: [
+        new Boat({x: 0, y: 0, direction: 'horizontal', type: 'destroyer'}),
+        new Boat({x: 4, y: 1, direction: 'horizontal', type: 'aircraft-carrier'}),
+        new Boat({x: 2, y: 3, direction: 'vertical', type: 'submarine'}),
+        new Boat({x: 4, y: 5, direction: 'horizontal', type: 'battleship'}),
+        new Boat({x: 1, y: 8, direction: 'horizontal', type: 'cruiser'})
+      ]});
       new GameView({model: game}).render();
       EOF
     end
@@ -51,6 +56,34 @@ describe "Game" do
       assert_counters(38, 2, "€ 480.000")
       page.should have_css "#cell-0-0.hit"
       page.should have_css "#cell-1-0.hit"
+    end
+
+    it "should end the game when the fleet has sunk" do
+      find('#cell-0-0').click
+      find('#cell-1-0').click
+
+      find('#cell-4-1').click
+      find('#cell-5-1').click
+      find('#cell-6-1').click
+      find('#cell-7-1').click
+      find('#cell-8-1').click
+
+      find('#cell-2-3').click
+      find('#cell-2-4').click
+      find('#cell-2-5').click
+
+      find('#cell-4-5').click
+      find('#cell-5-5').click
+      find('#cell-6-5').click
+      find('#cell-7-5').click
+
+      find('#cell-1-8').click
+      find('#cell-2-8').click
+      find('#cell-3-8').click
+      find('#cell-4-8').click
+
+      assert_counters(22, 2, "€ 1.070.000")
+      find("#endGameResult").should have_content("You win! You made € 670.000")
     end
 
   end
