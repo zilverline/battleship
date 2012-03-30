@@ -26,7 +26,7 @@ var Boat = Backbone.Model.extend({
     this.hits++;
     if (this.sunken()) {
       this.set("visible", true);
-      this.trigger("sunken");
+      this.trigger("sunken", this);
     }
   },
   sunken: function() {

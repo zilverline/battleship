@@ -1,13 +1,16 @@
 var Game = Backbone.Model.extend({
   defaults: {
-    maxShots: 40
+    shotsPerIteration: 40,
+    maxShots: 40,
+    costPerShot: 10000,
+    sunkenBoatCellReward: 50000
   },
   initialize: function(args) {
     _.bindAll(this, "sunkenBoat", "shotFired");
-        
-    this.set("shotsPerIteration", args.shotsPerIteration);
-    this.set("shotsRemaining", args.shotsPerIteration);
-    this.set("shots", this.get("maxShots"));
+
+    this.set("shotsRemainingForIteration", args.shotsPerIteration);
+    this.set("shotsRemainingForGame", this.get("maxShots"));
+    this.set("funds", this.get("maxShots") * this.get("costPerShot"));
     
     this.sunken = 0;
     this.set("board", new Board());
@@ -27,9 +30,6 @@ var Game = Backbone.Model.extend({
         }
       }
     });
-    
-
-    // this.addBoat(new Boat({x: 5, y: 3, direction: "horizontal", type: "destroyer", visible: false}));
   },
   random: function(max) {
     return Math.floor(Math.random()*max);
@@ -43,21 +43,23 @@ var Game = Backbone.Model.extend({
     this.get("board").addBoat(boat);
   },
   shotFired: function() {
-    this.set("shotsRemaining", this.get("shotsRemaining") - 1);
-    
-    if (this.get("shotsRemaining") <= 0) {
-      this.set("shotsRemaining", this.get("shotsPerIteration"));
+    this.set("shotsRemainingForIteration", this.get("shotsRemainingForIteration") - 1);
+    this.set("funds", this.get("funds") - this.get("costPerShot"));
+    this.set("shotsRemainingForGame", this.get("shotsRemainingForGame") - 1);
+
+    if (this.get("shotsRemainingForIteration") <= 0) {
+      this.set("shotsRemainingForIteration", this.get("shotsPerIteration"));
       this.get("board").showFeedback();
     }
     
-    this.set("shots", this.get("shots") - 1);
-    if (this.get("shots") <= 0) {
+    if (this.get("shotsRemainingForGame") <= 0) {
       this.endGame();
     }
   },
-  sunkenBoat: function() {
+  sunkenBoat: function(boat) {
     this.sunken++;
-    if (this.fleetDestroyed()) {
+    this.set("funds", this.get("funds") + boat.length() * this.get("sunkenBoatCellReward"));
+    if(this.fleetDestroyed() && this.get("shotsRemainingForGame") > 0) {
       this.endGame();
     }
   },
@@ -65,15 +67,14 @@ var Game = Backbone.Model.extend({
     return this.sunken >= this.get("board").fleetSize();
   },
   endGame: function() {
-    if (!this.has("state")) {
+    if (!this.has("endGameState")) {
       if (this.fleetDestroyed()) {
-        this.set("state", "win");
+        this.set("endGameState", "win");
       } else {
-        this.set("state", "lose");
+        this.set("endGameState", "lose");
       }
 
       this.get("board").disable();
-      this.get("board").showFeedback();
       this.get("board").showFleet();
     }
   }
@@ -81,26 +82,34 @@ var Game = Backbone.Model.extend({
 
 var GameView = Backbone.View.extend({
   initialize: function(args) {
-    _.bindAll(this, "updateShotCount", "updateState");
-    this.model.bind("change:shots", this.updateShotCount);
-    this.model.bind("change:state", this.updateState);
+    _.bindAll(this, "updateShotCount", "updateEndGameState", "updateFunds");
+    this.model.bind("change:shotsRemainingForGame", this.updateShotCount);
+    this.model.bind("change:funds", this.updateFunds);
+    this.model.bind("change:endGameState", this.updateEndGameState);
   },
   render: function() {
     this.boardView = new BoardView({model: this.model.get("board")});
     $("#container").append(this.boardView.render().el);
     this.updateShotCount();
-    $("#result").html("");
+    this.updateFunds();
+    $("#endGameResult").html("");
     return this;
   },
   updateShotCount: function() {
-    $("#shotsRemainingForIteration").html(this.model.get("shotsRemaining"));
-    $("#totalShotsRemaining").html(this.model.get("shots"));
+    $("#shotsRemainingForIteration").html(this.model.get("shotsRemainingForIteration"));
+    $("#totalShotsRemaining").html(this.model.get("shotsRemainingForGame"));
   },
-  updateState: function(model, state) {
-    if (state === "lose") {
-      $("#result").html("Game Over");
+  updateFunds: function() {
+    $("#funds").html(this.model.get("funds"));
+  },
+  updateEndGameState: function(model, endGameState) {
+    var diff = this.model.get("funds") - this.model.get("maxShots") * this.model.get("costPerShot");
+    if (endGameState === "lose") {
+      $("#endGameResult").html("Game Over<br/>You made " + diff);
     } else {
-      $("#result").html("You win!");
+      $("#endGameResult").html("You win!<br/>You made " + diff);
     }
+
+
   }
 });

@@ -1,44 +1,49 @@
 <html>
-    <head>
-        <title>Battleship</title>
+	<head>
+		<title>Battleship</title>
 
-        <script type="text/javascript" src="javascripts/ext/underscore.js"></script>
-        <script type="text/javascript" src="javascripts/ext/jquery-1.7.1.js"></script>
-        <script type="text/javascript" src="javascripts/ext/backbone.js"></script>
-        <script type="text/javascript" src="javascripts/ext/icanhaz.js"></script>
+		<script type="text/javascript" src="javascripts/ext/underscore.js"></script>
+		<script type="text/javascript" src="javascripts/ext/jquery-1.7.1.js"></script>
+		<script type="text/javascript" src="javascripts/ext/backbone.js"></script>
+		<script type="text/javascript" src="javascripts/ext/icanhaz.js"></script>
 
-        <script type="text/javascript" src="javascripts/app/Boat.js"></script>
-        <script type="text/javascript" src="javascripts/app/Cell.js"></script>
-        <script type="text/javascript" src="javascripts/app/Board.js"></script>
-        <script type="text/javascript" src="javascripts/app/Game.js"></script>
-        
-        <script type="text/javascript" src="javascripts/boot.js"></script>
-        
-        
-        <link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="screen" charset="utf-8">
-        
-        <script id="board" type="text/html">
-          <td>{{ name }}</td>
-        </script>
-    </head>
-    <body>
-        <label for="shotsPerIteration">Shots per iteration: </label>
-        <input id="shotsPerIteration" type="number" min="1" max="40" value="40" />
-        <button id="newGame">New game</button>
-        <br />
+		<script type="text/javascript" src="javascripts/app/Boat.js"></script>
+		<script type="text/javascript" src="javascripts/app/Cell.js"></script>
+		<script type="text/javascript" src="javascripts/app/Board.js"></script>
+		<script type="text/javascript" src="javascripts/app/Game.js"></script>
 
-        <div id="container"></div>
-        <br />
+		<script type="text/javascript" src="javascripts/boot.js"></script>
 
-        <table id="info">
-          <tr>
-            <td>Total shots remaining:</td>
-            <td id="totalShotsRemaining">&nbsp;</td>
-            <td rowspan="2" id="result">&nbsp;</td>
-          </tr>
-            <td>Shots remaining for iteration:</td>
-            <td id="shotsRemainingForIteration">&nbsp;</td>
-          </tr>
-        </table>
-    </body>
+
+		<link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="screen" charset="utf-8">
+
+		<script id="board" type="text/html">
+			<td>{{ name }}</td>
+		</script>
+	</head>
+	<body>
+		<label for="shotsPerIteration">Shots per iteration: </label>
+		<input id="shotsPerIteration" type="number" min="1" max="40" value="40"/>
+		<button id="newGame">New game</button>
+		<br/>
+
+		<div id="container"></div>
+		<br/>
+
+		<table id="info">
+			<tr>
+				<td>Total shots remaining:</td>
+				<td id="totalShotsRemaining">&nbsp;</td>
+				<td rowspan="3" id="endGameResult">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Shots remaining for iteration:</td>
+				<td id="shotsRemainingForIteration">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Balance:</td>
+				<td id="funds">&nbsp;</td>
+			</tr>
+		</table>
+	</body>
 </html>

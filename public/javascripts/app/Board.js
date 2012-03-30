@@ -38,7 +38,7 @@ var Board = Backbone.Model.extend({
   showFeedback: function() {
     _(this.targets).each(function(cell) {
       cell.updateState();
-    })
+    });
     this.targets = [];
   },
   addBoat: function(boat) {
