@@ -13,6 +13,9 @@
 src_files:
     - public/javascripts/ext/underscore.js
     - public/javascripts/ext/jquery-1.7.1.js
+    - public/javascripts/ext/jshashtable-2.1.js
+    - public/javascripts/ext/jquery.numeric.js
+    - public/javascripts/ext/jquery.numberformatter.js
     - public/javascripts/ext/backbone.js
     - public/javascripts/ext/icanhaz.js
     - public/javascripts/**/*.js
