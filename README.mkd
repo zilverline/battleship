@@ -1,0 +1,32 @@
+Battleship: A game to show the power of direct feedback in Scrum
+====================
+
+Why?
+----
+
+Read the blogpost at [zilverline.com](http://blog.zilverline.com/2012/04/01/the-power-of-feedback-in-scrum/)
+
+Installation
+------------
+	double click on index.html in the public folder. User friendly ! :)
+
+Usage Examples
+--------------
+General:
+	Shots each iteration is how many shots you need to do before the game tells you what are hits and what is a miss.
+
+	The game ends when:
+			- Total shot is zero OR
+			- You have sunk all ships
+
+	A ship is sunk when you have hit all the squares of a ship, this is also the time when you recieve money for sinking the ship ('see' a ship as software and you only get revenue with finished software). 
+
+Testing
+-------
+Run all tests:
+
+	rspec
+
+Copyright
+---------
+Copyright (c) 2011 Zilverline / Daniël van Hoesel, Bob Forma, Mark Suurmond.
