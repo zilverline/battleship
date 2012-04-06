@@ -13,19 +13,24 @@ Installation
 Usage Examples
 --------------
 General:
-	Shots each iteration is how many shots you need to do before the game tells you what are hits and what is a miss.
+	'Shots per iteration' is how many shots you need to do before the game tells you what are hits
+	and what is a miss (Feedback).
 
 	The game ends when:
-			- Total shot is zero OR
+			- 'Total shot remaining' is zero OR
 			- You have sunk all ships
 
-	A ship is sunk when you have hit all the squares of a ship, this is also the time when you recieve money for sinking the ship ('see' a ship as software and you only get revenue with finished software). 
+	A ship is sunk when you have hit all the squares of a ship, this is also the time when you recieve
+	money for sinking the ship ('see' a ship as software and you only get revenue with finished software).
+	
 
 Testing
 -------
+Tests are made in Jasmine and Capybara.
+
 Run all tests:
 
-	rspec
+	rspec spec
 
 Copyright
 ---------
