@@ -34,4 +34,4 @@ Run all tests:
 
 Copyright
 ---------
-Copyright (c) 2011 Zilverline / Daniël van Hoesel, Bob Forma, Mark Suurmond.
+Copyright (c) 2012 Zilverline / Daniël van Hoesel, Bob Forma, Mark Suurmond.
