@@ -9,6 +9,7 @@ Read the blogpost at [zilverline.com](http://blog.zilverline.com/2012/04/01/the-
 Installation
 ------------
 	double click on index.html in the public folder. User friendly ! :)
+	Or go to http://zilverline.github.com/battleship/
 
 Usage Examples
 --------------
