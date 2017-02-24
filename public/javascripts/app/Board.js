@@ -10,7 +10,7 @@ var Board = Backbone.Model.extend({
     this.grid = [];
     this.targets = [];
     _.bindAll(this, "fire");
-    
+
     for (var y = 0; y < this.get('gridSize').y; y++) {
       this.grid[y] = [];
       for (var x = 0; x < this.get('gridSize').x; x++) {
@@ -32,7 +32,7 @@ var Board = Backbone.Model.extend({
   },
   fire: function(cell) {
     this.targets.push(cell);
-    
+
     this.trigger("fire");
   },
   showFeedback: function() {
@@ -64,20 +64,20 @@ var Board = Backbone.Model.extend({
     var self = this;
     var cells = this.getCellsForBoat(boat);
     return !_(cells).any(function(cell) {
-      
+
       if (!cell) {
         return true;
       }
-      var edgeCells = [];      
+      var edgeCells = [];
       edgeCells.push(self.getCell(cell.get("x") + 1, cell.get("y")));
       edgeCells.push(self.getCell(cell.get("x") - 1, cell.get("y")));
       edgeCells.push(self.getCell(cell.get("x"), cell.get("y") + 1));
       edgeCells.push(self.getCell(cell.get("x"), cell.get("y") - 1));
-      
+
       return _(edgeCells).any(function(cell) {
         return cell === undefined || cell.has("boat");
       });
-      
+
     });
   },
   fleetSize: function() {
