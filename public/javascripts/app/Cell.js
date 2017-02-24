@@ -29,7 +29,6 @@ var CellView = Backbone.View.extend({
   },
   render: function() {
     this.$el.attr("id", "cell-" + this.model.get("x") + "-" + this.model.get("y"));
-    // this.$el.html();
     this.renderBoat();
     return this;
   },

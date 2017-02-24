@@ -10,7 +10,7 @@ var Board = Backbone.Model.extend({
     this.grid = [];
     this.targets = [];
     _.bindAll(this, "fire");
-    
+
     for (var y = 0; y < this.get('gridSize').y; y++) {
       this.grid[y] = [];
       for (var x = 0; x < this.get('gridSize').x; x++) {
@@ -32,7 +32,7 @@ var Board = Backbone.Model.extend({
   },
   fire: function(cell) {
     this.targets.push(cell);
-    
+
     this.trigger("fire");
   },
   showFeedback: function() {
@@ -64,20 +64,20 @@ var Board = Backbone.Model.extend({
     var self = this;
     var cells = this.getCellsForBoat(boat);
     return !_(cells).any(function(cell) {
-      
+
       if (!cell) {
         return true;
       }
-      var edgeCells = [];      
+      var edgeCells = [];
       edgeCells.push(self.getCell(cell.get("x") + 1, cell.get("y")));
       edgeCells.push(self.getCell(cell.get("x") - 1, cell.get("y")));
       edgeCells.push(self.getCell(cell.get("x"), cell.get("y") + 1));
       edgeCells.push(self.getCell(cell.get("x"), cell.get("y") - 1));
-      
+
       return _(edgeCells).any(function(cell) {
         return cell === undefined || cell.has("boat");
       });
-      
+
     });
   },
   fleetSize: function() {
@@ -108,10 +108,27 @@ var BoardView = Backbone.View.extend({
   removeBoard: function() {
     this.remove();
   },
+  renderHorizontalGuide: function() {
+    var guide = $("<tr />").addClass("horizontal-guide");
+    guide.append($("<td class='empty' />"));
+
+    _(this.model.get('gridSize').x).times(function(i) {
+      guide.append($("<td />").addClass("guide").html(String.fromCharCode(65 + i)));
+    });
+
+    this.$el.append(guide);
+  },
+  renderVerticalGuide: function(tr, i) {
+    tr.append($("<td class='guide'/>").html(i + 1));
+  },
   render: function() {
     var self = this;
-    _(this.model.getGrid()).each(function(row) {
+
+    this.renderHorizontalGuide();
+
+    _(this.model.getGrid()).each(function(row, i) {
       var tr = $("<tr />");
+      self.renderVerticalGuide(tr, i);
       _(row).each(function(cell) {
         tr.append(new CellView({model: cell}).render().el);
       });
