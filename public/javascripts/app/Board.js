@@ -108,10 +108,27 @@ var BoardView = Backbone.View.extend({
   removeBoard: function() {
     this.remove();
   },
+  renderHorizontalGuide: function() {
+    var guide = $("<tr />").addClass("horizontal-guide");
+    guide.append($("<td class='empty' />"));
+
+    _(this.model.get('gridSize').x).times(function(i) {
+      guide.append($("<td />").addClass("guide").html(String.fromCharCode(65 + i)));
+    });
+
+    this.$el.append(guide);
+  },
+  renderVerticalGuide: function(tr, i) {
+    tr.append($("<td class='guide'/>").html(i + 1));
+  },
   render: function() {
     var self = this;
-    _(this.model.getGrid()).each(function(row) {
+
+    this.renderHorizontalGuide();
+
+    _(this.model.getGrid()).each(function(row, i) {
       var tr = $("<tr />");
+      self.renderVerticalGuide(tr, i);
       _(row).each(function(cell) {
         tr.append(new CellView({model: cell}).render().el);
       });
