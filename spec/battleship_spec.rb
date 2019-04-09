@@ -37,7 +37,7 @@ describe "Game" do
       find('#cell-0-0').click
 
       assert_counters(39, 1, "€ 390.000")
-      page.should have_css "#cell-0-0.target"
+      expect(page).to have_css "#cell-0-0.target"
     end
 
     it "should fire two shots and give feedback" do
@@ -45,8 +45,8 @@ describe "Game" do
       find('#cell-0-1').click
 
       assert_counters(38, 2, "€ 380.000")
-      page.should have_css "#cell-0-0.hit"
-      page.should have_css "#cell-0-1.miss"
+      expect(page).to have_css "#cell-0-0.hit"
+      expect(page).to have_css "#cell-0-1.miss"
     end
 
     it "should fire several shots and sink a boat" do
@@ -54,8 +54,8 @@ describe "Game" do
       find('#cell-1-0').click
 
       assert_counters(38, 2, "€ 480.000")
-      page.should have_css "#cell-0-0.hit"
-      page.should have_css "#cell-1-0.hit"
+      expect(page).to have_css "#cell-0-0.hit"
+      expect(page).to have_css "#cell-1-0.hit"
     end
 
     it "should end the game when the fleet has sunk" do
@@ -83,15 +83,16 @@ describe "Game" do
       find('#cell-4-8').click
 
       assert_counters(22, 2, "€ 1.070.000")
-      find("#endGameResult").should have_content("You win! You made € 670.000")
+      expect(page).to have_content("You win!")
+      expect(page).to have_content("You made € 670.000")
     end
 
   end
 
   def assert_counters(total_shots_remaining, shots_remaining_for_iteration, funds)
-    find('#totalShotsRemaining').should have_content(total_shots_remaining.to_s)
-    find('#shotsRemainingForIteration').should have_content(shots_remaining_for_iteration.to_s)
-    find('#funds').should have_content(funds)
+    expect(find('#totalShotsRemaining')).to have_content(total_shots_remaining.to_s)
+    expect(find('#shotsRemainingForIteration')).to have_content(shots_remaining_for_iteration.to_s)
+    expect(find('#funds')).to have_content(funds)
   end
 
 end
